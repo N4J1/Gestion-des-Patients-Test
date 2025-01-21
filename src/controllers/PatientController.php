@@ -1,24 +1,75 @@
 <?php
-// src/controllers/PatientController.php
 
 require_once __DIR__ . '/../core/SmartyConfig.php';
 require_once __DIR__ . '/../models/PatientModel.php';
+require_once __DIR__ . '/../models/DepartementModel.php';
+require_once __DIR__ . '/../models/DoctorModel.php';
 
 class PatientController {
-    private $model;
+    private $patients;
+    private $departments;
+    private $doctors;
+    private $smarty;
     
 
     public function __construct() {
-        $this->model = new PatientModel();
-        
+        $this->patients = new PatientModel();
+        $this->departments = new DepartementModel();
+        $this->doctors = new DoctorModel();
+        $this->smarty = SmartyConfig::getSmarty();
     }
 
     public function list() {
-        $patients = $this->model->read();
-        echo "<pre>";
-        print_r($patients);
-        echo "</pre>";
+        $patients = $this->patients->readWithDetails();
+        
+        
+        $this->smarty->assign('patients', $patients);
+        $this->smarty->display('patients.tpl');
     }
+
+    public function create() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['name'] && $_POST['contact'] && $_POST['appointment_date'] && $_POST['doctor_id']) {
+            $this->patients->create($_POST['name'], $_POST['contact'], $_POST['appointment_date'], $_POST['doctor_id']);
+            header('Location: /patients');
+        } else {
+            $departments = $this->departments->read();
+            $doctors = $this->doctors->read();
+            $this->smarty->assign('departments', $departments);
+            $this->smarty->assign('doctors', $doctors);
+
+            $this->smarty->display('patients_create.tpl');
+        }
+    }
+
+    public function edit($id) {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['name'] && $_POST['contact'] && $_POST['appointment_date'] && $_POST['doctor_id']) {
+            $this->patients->update($id, $_POST['name'], $_POST['contact'], $_POST['appointment_date'], $_POST['doctor_id']);
+            header('Location: /patients');
+        } else {
+        $patient = $this->patients->readById($id);
+        $departments = $this->departments->read();
+        $doctors = $this->doctors->getDoctorsByDepartment($patient['doctor_department_id']);
+            $this->smarty->assign('patient', $patient);
+            $this->smarty->assign('departments', $departments);
+            $this->smarty->assign('doctors', $doctors);
+            $this->smarty->display('patients_edit.tpl');
+        }
+    }
+
+    public function delete($id) {
+        $this->patients->delete($id);
+        header('Location: /patients');
+    }
+
+    // I dont want to create a controller for this ,its the only function i need for the create patient page
+    public function getDoctorsByDepartment($departmentId) {
+       
+        $doctors = $this->doctors->getDoctorsByDepartment($departmentId);
+        echo json_encode($doctors);
+    }
+
+    
 
     
 }

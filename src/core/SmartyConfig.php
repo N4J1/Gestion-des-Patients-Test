@@ -10,8 +10,8 @@ class SmartyConfig {
 
         
         $smarty->setTemplateDir(__DIR__ . '/../../src/views');
-        $smarty->setCompileDir(__DIR__ . '/../../templates_c');
-        $smarty->setCacheDir(__DIR__ . '/../../cache');
+        $smarty->setCompileDir(__DIR__ . '/../../smarty/templates');
+        $smarty->setCacheDir(__DIR__ . '/../../smarty/cache');
         $smarty->setConfigDir(__DIR__ . '/../../config');
 
         
