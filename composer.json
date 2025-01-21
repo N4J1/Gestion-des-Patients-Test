@@ -1,0 +1,16 @@
+{
+    "name": "yassine/test_php",
+    "autoload": {
+        "psr-4": {
+            "Yassine\\TestPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Yassine NAJI"
+        }
+    ],
+    "require": {
+        "smarty/smarty": "^5.4"
+    }
+}
