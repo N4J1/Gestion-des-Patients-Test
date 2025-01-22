@@ -1,4 +1,4 @@
-# Système de Gestion de la Clinique Yassine
+# Système de Gestion de la Yassine Clinic
 
 Il s'agit d'une application web pour gérer les informations des patients et des médecins à la Clinique Yassine. Le système permet la création, la modification et la suppression des dossiers des patients, ainsi que la visualisation des détails des médecins en fonction des départements sélectionnés.
 
