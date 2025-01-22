@@ -64,5 +64,3 @@ J'ai utilisé le design pattern MVC pour ce projet, voici la structure de l'appl
 
 
 
-```
-
