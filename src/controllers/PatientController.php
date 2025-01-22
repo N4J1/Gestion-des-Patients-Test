@@ -21,17 +21,30 @@ class PatientController {
 
     public function list() {
         $patients = $this->patients->readWithDetails();
-        
-        
+        $doctors = $this->doctors->read();
+        $this->smarty->assign('title', 'Dashboard');
         $this->smarty->assign('patients', $patients);
+        $this->smarty->assign('patients_count', count($patients));
+        $this->smarty->assign('doctors', $doctors);
+        $this->smarty->assign('doctors_count', count($doctors));
+
         $this->smarty->display('patients.tpl');
     }
 
+    public function listOnlyPage() {
+        $patients = $this->patients->readWithDetails();
+        $this->smarty->assign('title', 'Patients Details');
+        $this->smarty->assign('patients', $patients);
+        $this->smarty->display('patients_page.tpl');
+    }
+
     public function create() {
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['name'] && $_POST['contact'] && $_POST['appointment_date'] && $_POST['doctor_id']) {
             $this->patients->create($_POST['name'], $_POST['contact'], $_POST['appointment_date'], $_POST['doctor_id']);
             header('Location: /patients');
         } else {
+            $this->smarty->assign('title', 'Create Patient');
             $departments = $this->departments->read();
             $doctors = $this->doctors->read();
             $this->smarty->assign('departments', $departments);
@@ -47,6 +60,7 @@ class PatientController {
             $this->patients->update($id, $_POST['name'], $_POST['contact'], $_POST['appointment_date'], $_POST['doctor_id']);
             header('Location: /patients');
         } else {
+            $this->smarty->assign('title', 'Edit Patient');
         $patient = $this->patients->readById($id);
         $departments = $this->departments->read();
         $doctors = $this->doctors->getDoctorsByDepartment($patient['doctor_department_id']);

@@ -1,7 +1,9 @@
 -- database schema
 CREATE TABLE departments (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE doctors (
@@ -10,7 +12,9 @@ CREATE TABLE doctors (
     contact VARCHAR(15) NOT NULL,
     qualification VARCHAR(100) NOT NULL,
     department_id INT NOT NULL,
-    FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE
+    FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE patients (
@@ -19,7 +23,9 @@ CREATE TABLE patients (
     contact VARCHAR(15) NOT NULL,
     appointment_date DATETIME NOT NULL,
     doctor_id INT NOT NULL,
-    FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE
+    FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 
